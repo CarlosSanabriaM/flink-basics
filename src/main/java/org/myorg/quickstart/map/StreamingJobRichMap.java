@@ -23,8 +23,13 @@ public class StreamingJobRichMap {
                 .fromElements(
                         Tuple2.of("a", 1),
                         Tuple2.of("a", 2),
-                        Tuple2.of("b", 3),
-                        Tuple2.of("b", 4)
+                        Tuple2.of("a", 3),
+                        Tuple2.of("a", 4),
+                        Tuple2.of("b", 5),
+                        Tuple2.of("b", 6),
+                        Tuple2.of("b", 7),
+                        Tuple2.of("b", 8),
+                        Tuple2.of("c", 9)
                 );
 
         // Apply Flink operators
@@ -42,6 +47,8 @@ public class StreamingJobRichMap {
         env.execute("Flink Streaming Job (RichMap example)");
     }
 
+    // This same example (sum all elements by group) can be done easier with a reduce function.
+    // Check it on StreamingJobReduce class.
     private static class SumByGroupsRichMap extends RichMapFunction<Tuple2<String, Integer>, Tuple2<String, Integer>> {
 
         private ValueState<Integer> sumState; // keyed state

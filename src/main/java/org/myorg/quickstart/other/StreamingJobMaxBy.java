@@ -10,7 +10,7 @@ import org.myorg.quickstart.utils.Utils;
 /**
  * MaxBy acts like a map. Always returns a value for each input event, even if the current value is lower than the max returned value.
  */
-public class StreamingMaxBy {
+public class StreamingJobMaxBy {
 
     public static void main(String[] args) throws Exception {
         // Set up the streaming execution environment
