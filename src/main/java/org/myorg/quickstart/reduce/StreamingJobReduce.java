@@ -31,7 +31,7 @@ public class StreamingJobReduce {
         // Apply Flink operators
         DataStream<Tuple2<String, Integer>> resultDataStream = dataStream
                 .keyBy(tuple -> tuple.f0)
-                .reduce(new SumByGroupsRichMap());
+                .reduce(new SumByGroupsReduce());
 
         // Print the DataStream
         resultDataStream.print();
@@ -43,7 +43,7 @@ public class StreamingJobReduce {
         env.execute("Flink Streaming Job (Reduce example)");
     }
 
-    private static class SumByGroupsRichMap implements ReduceFunction<Tuple2<String, Integer>> {
+    private static class SumByGroupsReduce implements ReduceFunction<Tuple2<String, Integer>> {
         @Override
         public Tuple2<String, Integer> reduce(Tuple2<String, Integer> tuple1, Tuple2<String, Integer> tuple2) {
             // This function is not invoked if only one event of a key arrives
