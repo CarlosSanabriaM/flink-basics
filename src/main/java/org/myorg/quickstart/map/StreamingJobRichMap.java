@@ -49,6 +49,7 @@ public class StreamingJobRichMap {
 
     // This same example (sum all elements by group) can be done easier with a reduce function.
     // Check it on StreamingJobReduce class.
+    // It can be done even easier with sum. Check it on StreamingJobSum class.
     private static class SumByGroupsRichMap extends RichMapFunction<Tuple2<String, Integer>, Tuple2<String, Integer>> {
 
         private ValueState<Integer> sumState; // keyed state
