@@ -33,6 +33,22 @@
       <scope>provided</scope>
     </dependency>
 
+    <!-- Lombok -->
+    <!-- https://projectlombok.org -->
+    <!-- https://projectlombok.org/features/all -->
+    <!-- https://mvnrepository.com/artifact/org.projectlombok/lombok -->
+    <!-- Lombok should be used at the provided scope. It's a compile-time-only tool. -->
+    <!-- Lombok configuration is specified in lombok.config.
+         See https://projectlombok.org/features/configuration for more info. -->
+    <!-- IMPORTANT: In order to work correctly with Lombok in IntellIJ,
+         this plugin must be installed: https://plugins.jetbrains.com/plugin/6317-lombok -->
+    <dependency>
+      <groupId>org.projectlombok</groupId>
+      <artifactId>lombok</artifactId>
+      <version>1.18.12</version>
+      <scope>provided</scope>
+    </dependency>
+
     <!-- Add logging framework, to produce console output when running in the IDE. -->
     <!-- These dependencies are excluded from the application JAR by default. -->
     <dependency>
