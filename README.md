@@ -13,9 +13,19 @@ With this, the IDE will have into account the dependencies included in the maven
 included in the pom.xml.
 
 ## Useful documentation sources
+### Event time Timestamps and Watermarks
+* [Generating Watermarks (official documentation)](https://ci.apache.org/projects/flink/flink-docs-stable/dev/event_timestamps_watermarks.html)
+* [Builtin Watermark Generators (official documentation)](https://ci.apache.org/projects/flink/flink-docs-stable/dev/event_timestamp_extractors.html)
+
+> Both timestamps and watermarks are specified as milliseconds since the Java epoch of 1970-01-01T00:00:00Z.
+
+> Specifying a TimestampAssigner is optional and in most cases you don’t actually want to specify one.  
+> For example, when using Kafka or Kinesis you would get timestamps directly from the Kafka/Kinesis records.
+
 ### Windows
 * [Introducing Stream Windows in Apache Flink (blog post)](https://flink.apache.org/news/2015/12/04/Introducing-windows.html)
 * [Windows (official documentation)](https://ci.apache.org/projects/flink/flink-docs-stable/dev/stream/operators/windows.html)
+* [Streaming Analytics (official documentation)](https://ci.apache.org/projects/flink/flink-docs-stable/learn-flink/streaming_analytics.html)
 
 > __ReduceFunction and AggregateFunction can be executed more efficiently__ (see State Size section)
 > because Flink can incrementally aggregate the elements for each window as they arrive.  
