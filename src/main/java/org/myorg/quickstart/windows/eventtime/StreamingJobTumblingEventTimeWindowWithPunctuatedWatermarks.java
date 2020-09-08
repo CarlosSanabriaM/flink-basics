@@ -16,6 +16,8 @@ import org.myorg.quickstart.utils.Utils;
 
 
 /**
+ * See explanation image of this program in <b>docs/event-time-window-with-punctuated-watermarks.png</b>.
+ *
  * <b>Windows useful documentation:</b>
  * <li>https://ci.apache.org/projects/flink/flink-docs-stable/dev/stream/operators/windows.html</li>
  * <li>https://flink.apache.org/news/2015/12/04/Introducing-windows.html</li>
