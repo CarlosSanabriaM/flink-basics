@@ -1,16 +1,20 @@
 package org.myorg.quickstart.utils;
 
 import org.apache.flink.configuration.Configuration;
+import org.apache.flink.streaming.api.TimeCharacteristic;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 
 public class Utils {
 
     public static StreamExecutionEnvironment getStreamExecutionEnvironment(StreamExecutionEnvironmentType streamExecutionEnvironmentType) {
+        StreamExecutionEnvironment env;
+
         switch (streamExecutionEnvironmentType) {
             case DEPENDS_ON_CONTEXT:
                 // Creates an execution environment that represents the context in which the program is currently executed.
                 // If the program is invoked standalone, this method returns a local execution environment, as returned by createLocalEnvironment().
-                return StreamExecutionEnvironment.getExecutionEnvironment();
+                env = StreamExecutionEnvironment.getExecutionEnvironment();
+                break;
             case LOCAL_WITH_WEB_UI:
                 // Specific situation where the program is invoked standalone (you need a local execution environment)
                 // and the web UI is required. The Flink Web UI is launched by default in http://localhost:8081.
@@ -19,10 +23,16 @@ public class Utils {
                 System.out.println("Visit http://localhost:8081 to see the UI.");
 
                 Configuration conf = new Configuration();
-                return StreamExecutionEnvironment.createLocalEnvironmentWithWebUI(conf);
+                env = StreamExecutionEnvironment.createLocalEnvironmentWithWebUI(conf);
+                break;
             default:
                 throw new IllegalArgumentException();
         }
+
+        // Set Event time
+        env.setStreamTimeCharacteristic(TimeCharacteristic.EventTime);
+
+        return env;
     }
 
 }
