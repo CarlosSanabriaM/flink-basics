@@ -1,4 +1,4 @@
-package org.myorg.quickstart.windows;
+package org.myorg.quickstart.windows.count;
 
 import org.apache.flink.api.common.accumulators.AverageAccumulator;
 import org.apache.flink.api.common.functions.AggregateFunction;
