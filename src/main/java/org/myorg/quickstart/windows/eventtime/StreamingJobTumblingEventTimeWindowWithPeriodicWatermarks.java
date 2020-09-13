@@ -28,9 +28,10 @@ public class StreamingJobTumblingEventTimeWindowWithPeriodicWatermarks {
         // IMPORTANT NOTE: The execution of this example IS NOT deterministic,
         //  because watermarks generation depends on processing time (due to the usage of a periodic watermark generator)
 
-        // Set up the streaming execution environment
+        //region Set up the streaming execution environment
         final StreamExecutionEnvironment env = Utils
                 .getStreamExecutionEnvironment(StreamExecutionEnvironmentType.DEPENDS_ON_CONTEXT);
+        //endregion
 
         //region Define the AutoWatermarkInterval
         // See the "Define the WatermarkStrategy" region to see what this line means
@@ -68,26 +69,27 @@ public class StreamingJobTumblingEventTimeWindowWithPeriodicWatermarks {
                 .getWatermarkStrategy();
         //endregion
 
-        // Assign Timestamps and Watermarks to the events in the DataStream
+        //region Assign Timestamps and Watermarks to the events in the DataStream
         DataStream<Event> dataStreamWithTimestampsAndWatermarks =
                 dataStream.assignTimestampsAndWatermarks(strategy);
+        //endregion
 
-        //Apply Flink operators
-
-        // Tag for late events
+        //region Define tag for late events
         final OutputTag<Event> lateTag = new OutputTag<Event>("late") {
         };
+        //endregion
 
-        // Events with the same key are grouped into windows of 5 milliseconds
+        //region Group events with the same key into windows of 5 milliseconds
         WindowedStream<Event, String, TimeWindow> windowedDataStream = dataStreamWithTimestampsAndWatermarks
                 .keyBy(Event::getKey) // key by the Event POJO key field
-                // Tumbling event time window of 5 seconds.
+                // Tumbling event time window of 5 milliseconds.
                 // timeWindow() creates processing or event time windows based on
                 // the time characteristic specified in the environment
                 // (in this case, EventTime is specified in the environment).
                 .timeWindow(Time.milliseconds(5))
                 // OPTIONAL: Collect the late events in a side output DataStream
                 .sideOutputLateData(lateTag);
+        //endregion
 
         //region Use a process window function to create an String with the info and the values of each window
         // In this case, the ProcessWindowFunction is defined as a normal class
@@ -102,8 +104,9 @@ public class StreamingJobTumblingEventTimeWindowWithPeriodicWatermarks {
                 .print("lateEvents");
         //endregion
 
-        // Execute program
+        //region Execute program
         env.execute("Flink Streaming Job (TumblingEventTimeWindowWithPeriodicWatermarks example)");
+        //endregion
     }
 
 }
