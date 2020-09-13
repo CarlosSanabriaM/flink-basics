@@ -10,8 +10,7 @@ import org.apache.flink.streaming.api.windowing.windows.TimeWindow;
 import org.apache.flink.util.OutputTag;
 import org.myorg.quickstart.utils.StreamExecutionEnvironmentType;
 import org.myorg.quickstart.utils.Utils;
-
-import java.time.Duration;
+import org.myorg.quickstart.windows.eventtime.watermarks.BoundedOutOfOrdernessPeriodicWatermarkStrategyFactory;
 
 
 /**
@@ -65,30 +64,8 @@ public class StreamingJobTumblingEventTimeWindowWithPeriodicWatermarks {
         //endregion
 
         //region Define the WatermarkStrategy
-        // A watermark for time Wt is an assertion that the stream is (probably) now complete up through time t.
-        // Any event following this watermark whose timestamp is ≤ Wt is late.
-
-        // A WatermarkStrategy is formed by a WatermarkGenerator and a TimestampAssigner.
-        // https://ci.apache.org/projects/flink/flink-docs-stable/dev/event_timestamp_extractors.html#fixed-amount-of-lateness
-        // https://ci.apache.org/projects/flink/flink-docs-stable/learn-flink/streaming_analytics.html#working-with-watermarks
-
-        // There are two different styles of watermark generation: periodic and punctuated.
-        // A periodic generator usually observes to the incoming events via onEvent() and
-        // then emits a watermark when the framework calls onPeriodicEmit().
-        // So it generates watermarks periodically.
-        // The interval (every n milliseconds) in which the watermark will be generated is defined
-        // via ExecutionConfig.setAutoWatermarkInterval(...).
-        // The generators’ onPeriodicEmit() method will be called each time, and a new watermark
-        // will be emitted if the returned watermark is non-null and larger than the previous watermark.
-
-        // With this strategy, we consider events that arrive out of order for a fixed amount of time.
-        WatermarkStrategy<Event> strategy = WatermarkStrategy
-                // The watermark lags behind the max timestamp seen in the stream by a fixed amount of time.
-                // In this case, the max amount of time an element is allowed to be late before being ignored
-                // when computing the final result for the given window is 3 milliseconds.
-                .<Event>forBoundedOutOfOrderness(Duration.ofMillis(3)) // specify WatermarkGenerator
-                // Event timestamp is picked from the Event POJO timestamp field
-                .withTimestampAssigner((event, timestamp) -> event.getTimestamp()); // specify TimestampAssigner
+        WatermarkStrategy<Event> strategy = BoundedOutOfOrdernessPeriodicWatermarkStrategyFactory.getInstance()
+                .getWatermarkStrategy();
         //endregion
 
         // Assign Timestamps and Watermarks to the events in the DataStream

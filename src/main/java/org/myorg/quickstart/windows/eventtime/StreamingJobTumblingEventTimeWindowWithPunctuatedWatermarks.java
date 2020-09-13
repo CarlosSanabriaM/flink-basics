@@ -1,8 +1,5 @@
 package org.myorg.quickstart.windows.eventtime;
 
-import org.apache.flink.api.common.eventtime.Watermark;
-import org.apache.flink.api.common.eventtime.WatermarkGenerator;
-import org.apache.flink.api.common.eventtime.WatermarkOutput;
 import org.apache.flink.api.common.eventtime.WatermarkStrategy;
 import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.streaming.api.datastream.SingleOutputStreamOperator;
@@ -13,6 +10,7 @@ import org.apache.flink.streaming.api.windowing.windows.TimeWindow;
 import org.apache.flink.util.OutputTag;
 import org.myorg.quickstart.utils.StreamExecutionEnvironmentType;
 import org.myorg.quickstart.utils.Utils;
+import org.myorg.quickstart.windows.eventtime.watermarks.BoundedOutOfOrdernessPunctuatedWatermarkStrategyFactory;
 
 
 /**
@@ -54,57 +52,8 @@ public class StreamingJobTumblingEventTimeWindowWithPunctuatedWatermarks {
         //endregion
 
         //region Define the WatermarkStrategy
-        // A watermark for time Wt is an assertion that the stream is (probably) now complete up through time t.
-        // Any event following this watermark whose timestamp is ≤ Wt is late.
-
-        // A WatermarkStrategy is formed by a WatermarkGenerator and a TimestampAssigner.
-        // https://ci.apache.org/projects/flink/flink-docs-stable/dev/event_timestamp_extractors.html#fixed-amount-of-lateness
-        // https://ci.apache.org/projects/flink/flink-docs-stable/learn-flink/streaming_analytics.html#working-with-watermarks
-
-        // There are two different styles of watermark generation: periodic and punctuated.
-        // A punctuated watermark generator will observe the stream of events and emit a watermark
-        // whenever it sees a special element that carries watermark information.
-        //
-        // Note: It is possible to generate a watermark on every single event.
-        //  However, because each watermark causes some computation downstream,
-        //  an excessive number of watermarks degrades performance.
-
-        // With this strategy, we consider events that arrive out of order for a fixed amount of time.
-        // The strategy will generate a watermark on every single event, for testing purposes.
-        //
-        // IMPORTANT: It will do the same as the forBoundedOutOfOrderness() in the
-        // StreamingJobTumblingEventTimeWindowWithPeriodicWatermarks class, but in this case,
-        // each event will force the generation of a watermark.
-        WatermarkStrategy<Event> strategy = WatermarkStrategy
-                // The watermark lags behind the max timestamp seen in the stream by a fixed amount of time.
-                // In this case, the max amount of time an element is allowed to be late before being ignored
-                // when computing the final result for the given window is 3 milliseconds.
-                .forGenerator(context -> new WatermarkGenerator<Event>() { // specify custom WatermarkGenerator
-                    // Implementation based on:
-                    // https://ci.apache.org/projects/flink/flink-docs-stable/dev/event_timestamps_watermarks.html#writing-a-periodic-watermarkgenerator
-                    // https://ci.apache.org/projects/flink/flink-docs-stable/dev/event_timestamps_watermarks.html#writing-a-punctuated-watermarkgenerator
-
-                    private static final long MAX_OUT_OF_ORDERNESS = 3; // 3 milliseconds
-
-                    private long currentMaxTimestamp;
-
-                    @Override
-                    public void onEvent(Event event, long eventTimestamp, WatermarkOutput output) {
-                        long lastMaxTimestamp = currentMaxTimestamp;
-                        currentMaxTimestamp = Math.max(currentMaxTimestamp, eventTimestamp);
-
-                        if (currentMaxTimestamp != lastMaxTimestamp)
-                            // emit the watermark as current highest timestamp minus the out-of-orderness bound
-                            output.emitWatermark(new Watermark(currentMaxTimestamp - MAX_OUT_OF_ORDERNESS - 1));
-                    }
-
-                    @Override
-                    public void onPeriodicEmit(WatermarkOutput output) {
-                        // don't need to do anything because we emit in reaction to events above
-                    }
-                })
-                // Event timestamp is picked from the Event POJO timestamp field
-                .withTimestampAssigner((event, timestamp) -> event.getTimestamp()); // specify TimestampAssigner
+        WatermarkStrategy<Event> strategy = BoundedOutOfOrdernessPunctuatedWatermarkStrategyFactory.getInstance()
+                .getWatermarkStrategy();
         //endregion
 
         // Assign Timestamps and Watermarks to the events in the DataStream
