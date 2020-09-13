@@ -5,6 +5,8 @@ import org.apache.flink.api.common.eventtime.WatermarkGenerator;
 import org.apache.flink.api.common.eventtime.WatermarkStrategy;
 import org.myorg.quickstart.windows.eventtime.Event;
 
+import java.io.Serializable;
+
 /**
  * A watermark for time Wt is an assertion that the stream is (probably) now complete up through time t.
  * Any event <b>following</b> this watermark whose timestamp is ≤ Wt is late.
@@ -15,6 +17,6 @@ import org.myorg.quickstart.windows.eventtime.Event;
  * <br>
  * There are two different styles of watermark generation: periodic and punctuated.
  */
-public interface WatermarkStrategyFactory {
+public interface WatermarkStrategyFactory extends Serializable {
     WatermarkStrategy<Event> getWatermarkStrategy();
 }
