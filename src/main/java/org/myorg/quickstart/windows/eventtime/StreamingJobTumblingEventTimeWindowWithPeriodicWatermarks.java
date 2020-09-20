@@ -60,7 +60,8 @@ public class StreamingJobTumblingEventTimeWindowWithPeriodicWatermarks {
                 Event.builder().key("a").value(7).timestamp(6L).build(),
                 Event.builder().key("a").value(8).timestamp(7L).build(),
                 Event.builder().key("a").value(9).timestamp(14L).build(),
-                Event.builder().key("a").value(10).timestamp(8L).build()
+                Event.builder().key("a").value(10).timestamp(10L).build(),
+                Event.builder().key("a").value(11).timestamp(9L).build()
         );
         //endregion
 

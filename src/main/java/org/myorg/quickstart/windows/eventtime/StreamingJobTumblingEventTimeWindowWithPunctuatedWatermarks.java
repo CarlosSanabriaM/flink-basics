@@ -39,16 +39,17 @@ public class StreamingJobTumblingEventTimeWindowWithPunctuatedWatermarks {
         //region Create a DataStream of events
         DataStream<Event> dataStream = env.fromElements(
                 // a
-                Event.builder().key("a").value(1).timestamp(2L).build(), // window 1
-                Event.builder().key("a").value(2).timestamp(1L).build(), // window 1
-                Event.builder().key("a").value(3).timestamp(3L).build(), // window 1
-                Event.builder().key("a").value(4).timestamp(9L).build(), // window 2
-                Event.builder().key("a").value(5).timestamp(4L).build(), // in this example, this event will always be late
-                Event.builder().key("a").value(6).timestamp(5L).build(), // window 2
-                Event.builder().key("a").value(7).timestamp(6L).build(), // window 2
-                Event.builder().key("a").value(8).timestamp(7L).build(), // window 2
-                Event.builder().key("a").value(9).timestamp(14L).build(), // window 3
-                Event.builder().key("a").value(10).timestamp(8L).build() // in this example, this event will always be late
+                Event.builder().key("a").value(1).timestamp(2L).build(),   // window 1
+                Event.builder().key("a").value(2).timestamp(1L).build(),   // window 1
+                Event.builder().key("a").value(3).timestamp(3L).build(),   // window 1
+                Event.builder().key("a").value(4).timestamp(9L).build(),   // window 2
+                Event.builder().key("a").value(5).timestamp(4L).build(),   // in this example, this event will always be late
+                Event.builder().key("a").value(6).timestamp(5L).build(),   // window 2
+                Event.builder().key("a").value(7).timestamp(6L).build(),   // window 2
+                Event.builder().key("a").value(8).timestamp(7L).build(),   // window 2
+                Event.builder().key("a").value(9).timestamp(14L).build(),  // window 3
+                Event.builder().key("a").value(10).timestamp(10L).build(), // window 3
+                Event.builder().key("a").value(11).timestamp(9L).build()   // in this example, this event will always be late
         );
         //endregion
 
