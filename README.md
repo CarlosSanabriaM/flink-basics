@@ -1,6 +1,6 @@
 # Flink basics
 
-Project with some basic examples of the Flink Java API.
+Project with some basic examples of the Flink Java DataStream API.
 
 ## How to execute this project
 The recommended IDE for executing this project is IntelliJ.
