@@ -27,32 +27,34 @@ public class Main {
     public static void main(String[] args) throws Exception {
 
         final StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
+        env.setParallelism(10);
 
         // Get data
         ArrayList<Person> people = createPeople(10);
 
         // Get initial DataStream
         DataStream<Person> dsPeople = env.fromCollection(people);
+        dsPeople.print("dsPeople");
 
         // Get net salary
         DataStream<Person> dsNetSalary = dsPeople.map(new NetSalaryMap());
-        //dsNetSalary.print();
+        dsNetSalary.print("dsNetSalary");
 
-        // People with a nett salary greater than 25,000,000
+        // People with a net salary greater than 25,000,000
         DataStream<Person> dsNetSalaryGreaterThan33000 = dsNetSalary.filter(new NetSalaryGreaterThanFilter(25000));
-        //dsNetSalaryGreaterThan33000.print();
+        dsNetSalaryGreaterThan33000.print("dsNetSalaryGreaterThan33000");
 
         // Sum of salary by country
-        DataStream<Tuple2<String, Double>> salaryByCountry = dsPeople
-            .keyBy(Person::getCountry)
-            .map(new SumSalaryByCountry());
-        //salaryByCountry.print();
+        DataStream<Tuple2<String, Double>> dsSalaryByCountry = dsPeople
+                .keyBy(Person::getCountry)
+                .map(new SumSalaryByCountry());
+        dsSalaryByCountry.print("dsSalaryByCountry");
 
         // Sink twice people from Spain
         DataStream<Person> dsTwiceSpanish = dsPeople
-            .keyBy(Person::getCountry)
-            .flatMap(new StoreTwiceIfSpainFlatMap());
-        dsTwiceSpanish.print();
+                .keyBy(Person::getCountry)
+                .flatMap(new StoreTwiceIfSpainFlatMap());
+        dsTwiceSpanish.print("dsTwiceSpanish");
 
         env.execute();
     }
@@ -64,15 +66,14 @@ public class Main {
 
         ArrayList<Person> people = new ArrayList<>();
 
-        for(int i=0; i<numberOfPeople; i++){
+        for (int i = 0; i < numberOfPeople; i++) {
             Person person = Person.builder()
-                .age(0)
-                .country(countries[new Random().nextInt(countries.length)])
-                .grossSalary(salaries[new Random().nextInt(salaries.length)])
-                .name("name-"+i)
-                .build();
+                    .age(0)
+                    .country(countries[new Random().nextInt(countries.length)])
+                    .grossSalary(salaries[new Random().nextInt(salaries.length)])
+                    .name("name-" + i)
+                    .build();
 
-            System.out.println(person);
             people.add(person);
         }
         return people;
