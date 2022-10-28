@@ -12,6 +12,17 @@ import org.myorg.quickstart.exercises.model.Person;
 import java.util.ArrayList;
 import java.util.Random;
 
+/**
+ * <h1>Ejercicios a realizar</h1>
+ * <ol>
+ * <li>Calcular el salario neto de cada persona. Para simplificar, el salario neto será el 60% del salario bruto.</li>
+ * <li>Aplicar un filtro al resultado del ejercicio anterior: solo nos quedamos con aquellas personas que tengan un salario neto mayor a 25,000.</li>
+ * <li>Sacar el sumatorio de sueldo bruto por país. Esto es, el resultado será un DataStream de tuplas de dos elementos,
+ * donde la clave sea el país y el valor sea la suma de todos los sueldos brutos de las personas pertenecientes a dicho país
+ * (String - país, Double - suma total).</li>
+ * <li>Aplicar una función sobre el primer DataStream de todos donde se escriban los usuarios españoles dos veces.</li>
+ * </ol>
+ */
 public class Main {
     public static void main(String[] args) throws Exception {
 
