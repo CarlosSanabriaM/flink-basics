@@ -41,8 +41,8 @@ public class Main {
         dsNetSalary.print("dsNetSalary");
 
         // People with a net salary greater than 25,000,000
-        DataStream<Person> dsNetSalaryGreaterThan33000 = dsNetSalary.filter(new NetSalaryGreaterThanFilter(25000));
-        dsNetSalaryGreaterThan33000.print("dsNetSalaryGreaterThan33000");
+        DataStream<Person> dsNetSalaryGreaterThan25000 = dsNetSalary.filter(new NetSalaryGreaterThanFilter(25000));
+        dsNetSalaryGreaterThan25000.print("dsNetSalaryGreaterThan25000");
 
         // Sum of salary by country
         DataStream<Tuple2<String, Double>> dsSalaryByCountry = dsPeople
