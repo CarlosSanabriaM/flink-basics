@@ -3,11 +3,11 @@ package org.myorg.quickstart.exercises.main;
 import org.apache.flink.api.java.tuple.Tuple2;
 import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
-import org.myorg.quickstart.exercises.operators.filter.NetSalaryGreaterThanFilter;
-import org.myorg.quickstart.exercises.operators.flatmap.StoreTwiceIfSpainFlatMap;
-import org.myorg.quickstart.exercises.operators.map.NetSalaryMap;
-import org.myorg.quickstart.exercises.operators.richmap.SumSalaryByCountry;
 import org.myorg.quickstart.exercises.model.Person;
+import org.myorg.quickstart.exercises.solutions.filter.NetSalaryGreaterThanFilter;
+import org.myorg.quickstart.exercises.solutions.flatmap.StoreTwiceIfSpainFlatMap;
+import org.myorg.quickstart.exercises.solutions.map.NetSalaryMap;
+import org.myorg.quickstart.exercises.solutions.richmap.SumSalaryByCountry;
 
 import java.util.ArrayList;
 import java.util.Random;
